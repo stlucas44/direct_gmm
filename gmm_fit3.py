@@ -2,8 +2,9 @@ import numpy as np
 from scipy.stats import multivariate_normal as mvn_pdf
 
 import matplotlib.pyplot as plt
-from cluster import MiniBatchKMeans
-from mixture import GaussianMixture
+from sklearn.cluster import MiniBatchKMeans
+from sklearn.mixture import GaussianMixture
+import open3d as o3d
 import pymesh
 from scipy.special import logsumexp
 
@@ -45,7 +46,7 @@ def tri_loss(gmm,faces_and_verts):
     thing = np.zeros((faces_and_verts.shape[0],gmm.weights_.shape[0]))
 
     i = 0
-    #things = 
+    #things =
     weights = np.zeros(thing.shape)
     for mu, s, si, pi in zip(gmm.means_,gmm.covariances_,gmm.precisions_,gmm.weights_):
         weights[:,i] = mvn_pdf.pdf(centroids,mu,s)
@@ -54,12 +55,12 @@ def tri_loss(gmm,faces_and_verts):
     row_sums = weights.sum(axis=1)
     #print(row_sums.shape)
     weights = weights / row_sums[:, np.newaxis]
-    i=0    
+    i=0
 
     for mu, s, si, pi in zip(gmm.means_,gmm.covariances_,gmm.precisions_,gmm.weights_):
         res = 0.0
         dev = (centroids - mu)
-        
+
         res = 0.0
         res -= 0.5 * np.log(2*np.pi) *3
         res -= 0.5 * np.log(np.linalg.det(s))
@@ -93,7 +94,7 @@ def tri_loss_lb(gmm,faces_and_verts):
     thing = np.zeros((faces_and_verts.shape[0],gmm.weights_.shape[0]))
 
     i = 0
-    #things = 
+    #things =
     weights = np.zeros(thing.shape)
     for mu, s, si, pi in zip(gmm.means_,gmm.covariances_,gmm.precisions_,gmm.weights_):
         weights[:,i] = mvn_pdf.pdf(centroids,mu,s)
@@ -102,12 +103,12 @@ def tri_loss_lb(gmm,faces_and_verts):
     row_sums = weights.sum(axis=1)
     #print(row_sums.shape)
     weights = weights / row_sums[:, np.newaxis]
-    i=0    
+    i=0
 
     for mu, s, si, pi in zip(gmm.means_,gmm.covariances_,gmm.precisions_,gmm.weights_):
         res = 0.0
         dev = (centroids - mu)
-        
+
         res = 0.0
         res -= 0.5 * np.log(2*np.pi) *3
         res -= 0.5 * np.log(np.linalg.det(s))
@@ -130,7 +131,7 @@ def pt_loss(gmm,points):
     #for p in points:
     thing = np.zeros((points.shape[0],gmm.weights_.shape[0]))
     i = 0
-    #things = 
+    #things =
     for mu, s, si, pi in zip(gmm.means_,gmm.covariances_,gmm.precisions_,gmm.weights_):
         res = 0.0
         dev = points-mu
@@ -150,7 +151,7 @@ def pt_loss_lb(gmm,points):
     #for p in points:
     thing = np.zeros((points.shape[0],gmm.weights_.shape[0]))
     i = 0
-    #things = 
+    #things =
     weights = np.zeros(thing.shape)
     for mu, s, si, pi in zip(gmm.means_,gmm.covariances_,gmm.precisions_,gmm.weights_):
         weights[:,i] = mvn_pdf.pdf(points,mu,s)
@@ -180,7 +181,7 @@ def com_loss(gmm,points,areas):
     #for p in points:
     thing = np.zeros((points.shape[0],gmm.weights_.shape[0]))
     i = 0
-    #things = 
+    #things =
     for mu, s, si, pi in zip(gmm.means_,gmm.covariances_,gmm.precisions_,gmm.weights_):
         res = 0.0
         dev = points-mu
@@ -200,7 +201,7 @@ def com_loss_lb(gmm,points,areas):
     #for p in points:
     thing = np.zeros((points.shape[0],gmm.weights_.shape[0]))
     i = 0
-    #things = 
+
     for mu, s, si, pi in zip(gmm.means_,gmm.covariances_,gmm.precisions_,gmm.weights_):
         res = 0.0
         dev = points-mu

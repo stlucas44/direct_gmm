@@ -9,7 +9,7 @@ import numpy as np
 from scipy import linalg
 
 from .base import BaseMixture, _check_shape
-from sklearn.externals.six.moves import zip
+from six.moves import zip
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils.extmath import row_norms
@@ -184,8 +184,8 @@ def _estimate_gaussian_covariances_full(resp, X, nk, means, reg_covar,areas=None
             diff = M - means[k]
             term2 = -3.0*np.dot(resp[:, k] *M.T,M)
             for jk in range(comps_n):
-                term2 += np.dot(resp[:, k] *As.T,As) + np.dot(resp[:, k] *Bs.T,Bs)  + np.dot(resp[:, k] *Cs.T,Cs)  
-            
+                term2 += np.dot(resp[:, k] *As.T,As) + np.dot(resp[:, k] *Bs.T,Bs)  + np.dot(resp[:, k] *Cs.T,Cs)
+
             covariances[k] =  (np.dot(resp[:, k] *diff.T, diff)  + (1.0/12.0)*(term2)) / (nk[k])
             covariances[k].flat[::n_features + 1] += reg_covar
         return covariances
@@ -318,7 +318,7 @@ def _estimate_gaussian_parameters(X, resp, reg_covar, covariance_type,areas=None
         #print(nk.shape,resp.shape,areas[:,np.newaxis].shape)
         #print(resp.shape,nk.shape,X.shape,np.dot(new_resp.T, X).shape)
         means = np.dot(new_resp.T, X) / (nk[:, np.newaxis] )
-        
+
         #print(areas.shape,means.shape,nk.shape,resp.shape,nk.shape)
         #raise
         covariances = {"full": _estimate_gaussian_covariances_full,
@@ -452,7 +452,7 @@ def _estimate_log_gaussian_prob(X, means, precisions_chol, covariance_type, area
     if covariance_type == 'full':
         log_prob = np.empty((n_samples, n_components))
         for k, (mu, prec_chol) in enumerate(zip(means, precisions_chol)):
-            y =  (np.dot(X, prec_chol) - np.dot(mu, prec_chol)) 
+            y =  (np.dot(X, prec_chol) - np.dot(mu, prec_chol))
             log_prob[:, k] = np.sum(np.square(y), axis=1)
     elif covariance_type == 'tied':
         log_prob = np.empty((n_samples, n_components))
@@ -499,7 +499,7 @@ def _estimate_log_gaussian_prob(X, means, precisions_chol, covariance_type, area
 
             term2 = 1.0/12.0 * (a + b + c - 3*m)
             log_prob[:,k] = (base + term2)
-            
+
         return (-.5 * (n_features * np.log(2 * np.pi) + log_prob) + log_det)
     if areas is not None:
         log_prob = log_prob*(areas[:,np.newaxis]/areas.min())
@@ -743,7 +743,7 @@ class GaussianMixture(BaseMixture):
             self.tri_dim = tris.shape[1]
 
             for jk in range(comps_n):
-                term2 += np.dot(resp[:, k] *As.T,As) + np.dot(resp[:, k] *Bs.T,Bs)  + np.dot(resp[:, k] *Cs.T,Cs)  
+                term2 += np.dot(resp[:, k] *As.T,As) + np.dot(resp[:, k] *Bs.T,Bs)  + np.dot(resp[:, k] *Cs.T,Cs)
             self.midpoints = tris.sum(1)/self.tri_dim
             self.tri_covars = [ for i in range(self.tri_dim)]
         else:

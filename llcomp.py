@@ -40,7 +40,7 @@ def pt_loss_lb(gmm,points):
     #for p in points:
     thing = np.zeros((points.shape[0],gmm.weights_.shape[0]))
     i = 0
-    #things = 
+    #things =
     weights = np.zeros(thing.shape)
     for mu, s, si, pi in zip(gmm.means_,gmm.covariances_,gmm.precisions_,gmm.weights_):
         weights[:,i] = mvn_pdf.pdf(points,mu,s)

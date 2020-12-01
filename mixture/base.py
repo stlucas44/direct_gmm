@@ -15,10 +15,10 @@ import numpy as np
 from sklearn import cluster
 from sklearn.base import BaseEstimator
 from sklearn.base import DensityMixin
-from sklearn.externals import six
+import six
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.utils import check_array, check_random_state
-from sklearn.utils.fixes import logsumexp
+from scipy.special import logsumexp
 
 
 def _check_shape(param, param_shape, name):

@@ -9,7 +9,7 @@ import numpy as np
 from scipy import linalg
 
 from .base import BaseMixture, _check_shape
-from sklearn.externals.six.moves import zip
+from six.moves import zip
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils.extmath import row_norms
